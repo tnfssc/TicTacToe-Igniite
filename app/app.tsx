@@ -15,6 +15,7 @@ import React, { useState, useEffect, useRef, FunctionComponent as Component } fr
 import { NavigationContainerRef } from "@react-navigation/native"
 import { SafeAreaProvider, initialWindowSafeAreaInsets } from "react-native-safe-area-context"
 import * as storage from "./utils/storage"
+import SplashScreen from "react-native-splash-screen"
 import {
   useBackButtonHandler,
   RootNavigator,
@@ -27,7 +28,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
-import { enableScreens } from 'react-native-screens'
+import { enableScreens } from "react-native-screens"
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -48,9 +49,10 @@ const App: Component<{}> = () => {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       setupRootStore().then(setRootStore)
     })()
+    SplashScreen.hide()
   }, [])
 
   // Before we show the app, we have to wait for our state to be ready.
