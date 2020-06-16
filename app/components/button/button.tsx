@@ -22,9 +22,15 @@ export function Button(props: ButtonProps) {
     ...rest
   } = props
 
-  const viewStyle = mergeAll(flatten([viewPresets[preset] || viewPresets.primary, styleOverride]))
+  const viewStyle = mergeAll(
+    flatten([viewPresets[preset] || viewPresets.primary, styleOverride]).map(item =>
+      item ? item : {},
+    ),
+  )
   const textStyle = mergeAll(
-    flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
+    flatten([textPresets[preset] || textPresets.primary, textStyleOverride]).map(item =>
+      item ? item : {},
+    ),
   )
 
   const content = children || <Text tx={tx} text={text} style={textStyle} />

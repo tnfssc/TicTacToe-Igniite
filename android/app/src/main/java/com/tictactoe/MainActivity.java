@@ -1,6 +1,7 @@
 package com.tictactoe;
 
 import android.os.Bundle;
+import android.graphics.Color;
 import org.devio.rn.splashscreen.SplashScreen;
 
 import com.facebook.react.ReactActivity;
@@ -20,7 +21,10 @@ public class MainActivity extends ReactActivity {
     return new ReactActivityDelegate(this, getMainComponentName()) {
       @Override
       protected ReactRootView createRootView() {
-       return new RNGestureHandlerEnabledRootView(MainActivity.this);
+        RNGestureHandlerEnabledRootView bGBlackRootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
+        bGBlackRootView.setBackgroundColor( Color.parseColor("#000000") );
+       return bGBlackRootView;
+       //return new RNGestureHandlerEnabledRootView(MainActivity.this));
       }
     };
   }

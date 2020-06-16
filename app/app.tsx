@@ -37,7 +37,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  * This is the root component of our app.
  */
 const App: Component<{}> = () => {
-  const navigationRef = useRef<NavigationContainerRef>()
+  const navigationRef = useRef<NavigationContainerRef>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
 
   setRootNavigation(navigationRef)
@@ -49,10 +49,11 @@ const App: Component<{}> = () => {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    ;(async () => {
+    const init = async () => {
       setupRootStore().then(setRootStore)
-    })()
-    SplashScreen.hide()
+      SplashScreen.hide()
+    }
+    init()
   }, [])
 
   // Before we show the app, we have to wait for our state to be ready.

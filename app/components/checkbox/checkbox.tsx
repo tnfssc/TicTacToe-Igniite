@@ -34,9 +34,11 @@ const LABEL: TextStyle = { paddingLeft: spacing[2] }
 export function Checkbox(props: CheckboxProps) {
   const numberOfLines = props.multiline ? 0 : 1
 
-  const rootStyle = mergeAll(flatten([ROOT, props.style]))
-  const outlineStyle = mergeAll(flatten([OUTLINE, props.outlineStyle]))
-  const fillStyle = mergeAll(flatten([FILL, props.fillStyle]))
+  const rootStyle = mergeAll(flatten([ROOT, props.style]).map(item => (item ? item : {})))
+  const outlineStyle = mergeAll(
+    flatten([OUTLINE, props.outlineStyle]).map(item => (item ? item : {})),
+  )
+  const fillStyle = mergeAll(flatten([FILL, props.fillStyle]).map(item => (item ? item : {})))
 
   const onPress = props.onToggle ? () => props.onToggle && props.onToggle(!props.value) : null
 
@@ -44,7 +46,7 @@ export function Checkbox(props: CheckboxProps) {
     <TouchableOpacity
       activeOpacity={1}
       disabled={!props.onToggle}
-      onPress={onPress}
+      onPress={onPress ? onPress : () => undefined}
       style={rootStyle}
     >
       <View style={outlineStyle}>{props.value && <View style={fillStyle} />}</View>

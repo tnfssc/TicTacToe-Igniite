@@ -33,7 +33,7 @@ it("is an observable property", async () => {
 
 it("can be synchronously observed", () => {
   const thing = ThingModel.create()
-  let changed: string
+  let changed: string = "null"
   reaction(
     () => thing.status,
     value => {

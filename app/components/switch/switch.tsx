@@ -68,11 +68,11 @@ export const Switch: Component<SwitchProps> = props => {
     [timer],
   )
 
-  const [previousValue, setPreviousValue] = React.useState<boolean>(props.value)
+  const [previousValue, setPreviousValue] = React.useState<boolean>(props.value || false)
   React.useEffect(() => {
     if (props.value !== previousValue) {
-      startAnimation(props.value)
-      setPreviousValue(props.value)
+      startAnimation(props.value || false)
+      setPreviousValue(props.value || false)
     }
   }, [props.value])
 

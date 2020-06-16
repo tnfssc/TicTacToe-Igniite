@@ -8,6 +8,7 @@ import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { WelcomeScreen, DemoScreen, TictactoeScreen } from "../screens"
+import { color } from "../theme"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -36,6 +37,8 @@ export function PrimaryNavigator() {
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
+        stackAnimation: "default",
+        headerTintColor: color.palette.black,
       }}
     >
       <Stack.Screen name="welcome" component={WelcomeScreen} />

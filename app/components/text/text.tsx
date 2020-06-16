@@ -18,7 +18,9 @@ export function Text(props: TextProps) {
   const i18nText = tx && translate(tx, txOptions)
   const content = i18nText || text || children
 
-  const style = mergeAll(flatten([presets[preset] || presets.default, styleOverride]))
+  const style = mergeAll(
+    flatten([presets[preset] || presets.default, styleOverride]).map(item => (item ? item : {})),
+  )
 
   return (
     <ReactNativeText {...rest} style={style}>

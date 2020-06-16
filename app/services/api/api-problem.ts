@@ -37,6 +37,7 @@ export type GeneralApiProblem =
    * The data we received is not in the expected format.
    */
   | { kind: "bad-data" }
+  | null
 
 /**
  * Attempts to get a common cause of problems from an api response.

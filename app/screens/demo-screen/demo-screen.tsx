@@ -83,6 +83,7 @@ export const DemoScreen: Component = observer(function DemoScreen() {
 
   const demoReactotron = React.useMemo(
     () => async () => {
+      if (!(console.tron.log && console.tron.logImportant)) return
       console.tron.log("Your Friendly tron log message")
       console.tron.logImportant("I am important")
       console.tron.display({

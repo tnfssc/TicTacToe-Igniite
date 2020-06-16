@@ -18,7 +18,7 @@ declare global {
 }
 
 /** Do Nothing. */
-const noop = () => undefined
+const noop: any = (): any => undefined
 
 // in dev, we attach Reactotron, in prod we attach a interface-compatible mock.
 if (__DEV__) {
@@ -87,7 +87,13 @@ export class Reactotron {
       rootStore = rootStore as RootStore // typescript hack
       this.rootStore = rootStore
 
-      const { initial, snapshots } = this.config.state
+      if (!(this.config.state?.initial && this.config.state.snapshots)) return
+      const {
+        initial,
+        snapshots,
+      }:
+        | { initial?: boolean | undefined; snapshots?: boolean | undefined }
+        | undefined = this.config.state
       const name = "ROOT STORE"
 
       // logging features
@@ -120,7 +126,7 @@ export class Reactotron {
 
       // hookup middleware
       if (this.config.useAsyncStorage) {
-        Tron.setAsyncStorageHandler(AsyncStorage)
+        if (Tron.setAsyncStorageHandler) Tron.setAsyncStorageHandler(AsyncStorage)
       }
       Tron.useReactNative({
         asyncStorage: this.config.useAsyncStorage ? undefined : false,
@@ -145,7 +151,7 @@ export class Reactotron {
         description: "Resets the MST store",
         command: "resetStore",
         handler: () => {
-          console.tron.log("resetting store")
+          if (console.tron.log) console.tron.log("resetting store")
           clear()
         },
       })
@@ -155,7 +161,7 @@ export class Reactotron {
         description: "Resets the navigation state",
         command: "resetNavigation",
         handler: () => {
-          console.tron.log("resetting navigation state")
+          if (console.tron.log) console.tron.log("resetting navigation state")
           RootNavigation.resetRoot({ routes: [] })
         },
       })
@@ -165,14 +171,14 @@ export class Reactotron {
         description: "Goes back",
         command: "goBack",
         handler: () => {
-          console.tron.log("Going back")
+          if (console.tron.log) console.tron.log("Going back")
           RootNavigation.goBack()
         },
       })
 
       // clear if we should
       if (this.config.clearOnLoad) {
-        Tron.clear()
+        if (Tron.clear) Tron.clear()
       }
     }
   }

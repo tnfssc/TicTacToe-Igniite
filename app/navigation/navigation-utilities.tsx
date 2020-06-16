@@ -27,7 +27,7 @@ export const setRootNavigation = (ref: React.RefObject<NavigationContainerRef>) 
  * Gets the current screen from any navigation state.
  */
 export function getActiveRouteName(state: NavigationState | PartialState<NavigationState>) {
-  const route = state.routes[state.index]
+  const route = state.routes[state.index ? state.index : 0]
 
   // Found the active route -- return the name
   if (!route.state) return route.name
@@ -100,7 +100,7 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
 
     if (previousRouteName !== currentRouteName) {
       // track screens.
-      __DEV__ && console.tron.log(currentRouteName)
+      if (console.tron.log) __DEV__ && console.tron.log(currentRouteName)
     }
 
     // Save the current route name for later comparision
