@@ -24,6 +24,7 @@ import {
   useNavigationPersistence,
 } from "./navigation"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
+import codePush, { CodePushOptions } from "react-native-code-push"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -75,5 +76,18 @@ const App: Component<{}> = () => {
     </RootStoreProvider>
   )
 }
-
-export default App
+const codePushOptions: CodePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  mandatoryInstallMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+  minimumBackgroundDuration: 120,
+  updateDialog: {
+    appendReleaseDescription: true,
+    mandatoryContinueButtonLabel: "Update Now",
+    mandatoryUpdateMessage: "This update is mandatory!",
+    optionalIgnoreButtonLabel: "Remind me Later!",
+    optionalInstallButtonLabel: "Update Now",
+    optionalUpdateMessage: "A instant update is available. It consumes very little data (< 5MB).",
+    title: "Update available",
+  },
+}
+export default codePush(codePushOptions)(App)
