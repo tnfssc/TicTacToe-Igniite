@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TicTacToe</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">aSJWQxV35bjgY5-wt-GEMHnbZS9M8cL35hCSx</string>
+    <string moduleConfig="true" name="CodePushDeploymentKeyProd">JJTpHelYiOsFzQbb2aPtRJP5yQcdiwY131GtG</string>
 </resources>
