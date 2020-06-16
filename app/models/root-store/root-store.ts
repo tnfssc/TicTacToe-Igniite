@@ -1,15 +1,17 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import CodePush from "react-native-code-push"
 
 export const defaultStatesJSON = require("./default-states.json")
 
 const CellStateModel = types.enumeration(["X", "O", " "])
 const CellsStateModel = types.array(types.array(CellStateModel))
-interface TicTacToeCellsState extends Instance<typeof CellsStateModel> {}
+export interface TicTacToeCellsState extends Instance<typeof CellsStateModel> {}
 
 const defaultCellsState: TicTacToeCellsState = defaultStatesJSON.ticTacToeDefaultCellsState
 const defaultPlayerState = "X"
 
 const TicTacToeWinningCellsPattern: (0 | 1 | 2)[][][] = defaultStatesJSON.ticTacToeWinningPattern
+import SplashScreen from "react-native-splash-screen"
 
 const ticTacToeStateModel = types
   .model({
@@ -64,8 +66,33 @@ const ticTacToeStateModel = types
     },
   }))
 
+const rootModalViewModel = types.model({
+  mandatory: types.boolean,
+  size: types.number,
+  appVersion: types.string,
+  description: types.string,
+  valid: types.boolean,
+  progress: types.number,
+})
+const rootModalModel = types
+  .model({
+    open: types.boolean,
+    view: rootModalViewModel,
+  })
+  .actions(self => ({
+    hide: () => (self.open = false),
+    show: () => (self.open = true),
+    configure: (view: IRootModalViewModel) => (self.view = { ...view }),
+    setProgress: ({ receivedBytes, totalBytes }): number =>
+      (self.view.progress = Math.round((receivedBytes / totalBytes) * 100)),
+  }))
+
+export interface IRootModalModel extends Instance<typeof rootModalModel> {}
+export interface IRootModalViewModel extends Instance<typeof rootModalViewModel> {}
+
 const StateStore = types.model("StateStore").props({
   ticTacToeState: ticTacToeStateModel,
+  rootModal: rootModalModel,
 })
 
 export const RootStoreModel = types
@@ -77,7 +104,49 @@ export const RootStoreModel = types
     afterCreate: () => {
       self.stateStore = StateStore.create({
         ticTacToeState: ticTacToeStateModel.create(),
+        rootModal: rootModalModel.create(defaultStatesJSON.rootModelDefaultState),
       })
+      CodePush.notifyAppReady()
+      CodePush.checkForUpdate()
+        .then(update => {
+          if (!update) return SplashScreen.hide()
+          //update = { appVersion: null, description: null, isMandatory: null, packageSize: null }
+          const { appVersion, description, isMandatory, packageSize } = update
+          self.stateStore?.rootModal.configure({
+            appVersion: appVersion ? appVersion : "",
+            description: description ? description : "",
+            mandatory: isMandatory ? isMandatory : false,
+            size: packageSize ? packageSize : NaN,
+            valid: true,
+            progress: 0,
+          })
+          self.stateStore?.rootModal.show()
+        })
+        .catch(error => console.log(error))
+    },
+  }))
+  .actions(self => ({
+    updateApplication: () => {
+      CodePush.checkForUpdate().then(update => {
+        if (!update) {
+          SplashScreen.hide()
+          self.stateStore?.rootModal.hide()
+          return
+        }
+        update
+          .download(progress => self.stateStore?.rootModal.setProgress(progress))
+          .then(bundle => {
+            CodePush.allowRestart()
+            bundle.install(CodePush.InstallMode.IMMEDIATE).then(() => {
+              self.stateStore?.rootModal.hide()
+              //  SplashScreen.hide()
+            })
+          })
+      })
+    },
+    remindMeLater: () => {
+      self.stateStore?.rootModal.hide()
+      SplashScreen.hide()
     },
   }))
 

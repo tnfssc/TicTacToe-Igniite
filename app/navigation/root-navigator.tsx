@@ -4,12 +4,17 @@
  * and a "main" flow (which is contained in your PrimaryNavigator) which the user
  * will use once logged in.
  */
-import React from "react"
+import React, { FunctionComponent as Component } from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { PrimaryNavigator } from "./primary-navigator"
-import { color } from "../theme"
+import { color, timing, spacing } from "../theme"
+import { useStores } from "../models"
+import ReactNativeModal from "react-native-modal"
+import { ViewStyle, View } from "react-native"
+import { Text, Button } from "../components"
+import { observer } from "mobx-react-lite"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -27,7 +32,7 @@ export type RootParamList = {
 
 const Stack = createNativeStackNavigator<RootParamList>()
 
-const RootStack = () => {
+const RootStack: Component = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -49,12 +54,71 @@ const RootStack = () => {
   )
 }
 
-export const RootNavigator = React.forwardRef<
+const MODAL_VIEW: ViewStyle = {
+  backgroundColor: color.palette.black,
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: spacing[3],
+  padding: spacing[4],
+}
+
+const RootModal: Component = observer(() => {
+  const rootStore = useStores()
+  const { stateStore } = rootStore
+  if (!stateStore) return null
+  const { rootModal } = stateStore
+
+  return (
+    <ReactNativeModal
+      isVisible={rootModal.open && rootModal.view.valid}
+      animationIn="bounceInDown"
+      animationInTiming={timing.slow}
+      animationOutTiming={timing.fast}
+      animationOut="bounceOutUp"
+    >
+      <View style={MODAL_VIEW}>
+        <Text>{rootModal.view.appVersion}</Text>
+        {!rootModal.view.mandatory ? (
+          <Button onPress={rootStore.remindMeLater}>
+            <Text>[X]</Text>
+          </Button>
+        ) : (
+          <></>
+        )}
+        <Text>Update available</Text>
+        {rootModal.view.description.length ? <Text>Description: {}</Text> : <></>}
+        <Text>Size: {Math.round(rootModal.view.size / 1000) / 1000} MB</Text>
+        <Text>Version: {rootModal.view.appVersion}</Text>
+        <Button onPress={rootStore.updateApplication}>
+          <Text>Update Now</Text>
+        </Button>
+        <View
+          style={{ width: "100%", flexDirection: "row", height: 16, justifyContent: "flex-start" }}
+        >
+          <View
+            style={{
+              width: `${rootModal.view.progress}%`,
+              backgroundColor: color.palette.orangeDarker,
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text>{`${rootModal.view.progress}%`}</Text>
+          </View>
+        </View>
+      </View>
+    </ReactNativeModal>
+  )
+})
+
+export const RootNavigator: Component = React.forwardRef<
   NavigationContainerRef,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   return (
     <NavigationContainer {...props} ref={ref}>
+      <RootModal />
       <RootStack />
     </NavigationContainer>
   )

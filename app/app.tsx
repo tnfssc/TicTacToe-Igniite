@@ -15,7 +15,6 @@ import React, { useState, useEffect, useRef, FunctionComponent as Component } fr
 import { NavigationContainerRef } from "@react-navigation/native"
 import { SafeAreaProvider, initialWindowSafeAreaInsets } from "react-native-safe-area-context"
 import * as storage from "./utils/storage"
-import SplashScreen from "react-native-splash-screen"
 import {
   useBackButtonHandler,
   RootNavigator,
@@ -26,17 +25,13 @@ import {
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import codePush, { CodePushOptions } from "react-native-code-push"
 
-// This puts screens in a native ViewController or Activity. If you want fully native
-// stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
-// https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
+import { View } from "react-native"
+import { Text } from "./components"
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
-/**
- * This is the root component of our app.
- */
 const App: Component<{}> = () => {
   const navigationRef = useRef<NavigationContainerRef>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
@@ -52,18 +47,16 @@ const App: Component<{}> = () => {
   useEffect(() => {
     const init = async () => {
       setupRootStore().then(setRootStore)
-      SplashScreen.hide()
     }
     init()
   }, [])
+  if (!rootStore)
+    return (
+      <View>
+        <Text>ERROR</Text>
+      </View>
+    )
 
-  // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color. You can replace
-  // with your own loading component if you wish.
-  if (!rootStore) return null
-
-  // otherwise, we're ready to render the app
   return (
     <RootStoreProvider value={rootStore}>
       <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
@@ -76,7 +69,7 @@ const App: Component<{}> = () => {
     </RootStoreProvider>
   )
 }
-const codePushOptions: CodePushOptions = {
+export const codePushOptions: CodePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   mandatoryInstallMode: codePush.InstallMode.ON_NEXT_SUSPEND,
   minimumBackgroundDuration: 120,
@@ -90,4 +83,4 @@ const codePushOptions: CodePushOptions = {
     title: "Update available",
   },
 }
-export default codePush(codePushOptions)(App)
+export default App

@@ -45,5 +45,16 @@
       [1, 1],
       [0, 2]
     ]
-  ]
+  ],
+  "rootModelDefaultState": {
+    "open": false,
+    "view": {
+      "mandatory": false,
+      "size": 0,
+      "appVersion": "",
+      "description": "",
+      "valid": false,
+      "progress": 0
+    }
+  }
 }
