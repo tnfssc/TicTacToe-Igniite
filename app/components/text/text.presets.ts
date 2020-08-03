@@ -1,5 +1,5 @@
-import { TextStyle } from "react-native"
-import { color, typography } from "../../theme"
+import { TextStyle } from 'react-native';
+import { color, typography } from '../../theme';
 
 /**
  * All text will start off looking like this.
@@ -7,8 +7,8 @@ import { color, typography } from "../../theme"
 const BASE: TextStyle = {
   fontFamily: typography.primary,
   color: color.text,
-  fontSize: 15,
-}
+  fontSize: 15
+};
 
 /**
  * All the variations of text styling within the app.
@@ -24,12 +24,12 @@ export const presets = {
   /**
    * A bold version of the default text.
    */
-  bold: { ...BASE, fontWeight: "bold" } as TextStyle,
+  bold: { ...BASE, fontWeight: 'bold' } as TextStyle,
 
   /**
    * Large headers.
    */
-  header: { ...BASE, fontSize: 24, fontWeight: "bold" } as TextStyle,
+  header: { ...BASE, fontSize: 24, fontWeight: 'bold' } as TextStyle,
 
   /**
    * Field labels that appear on forms above the inputs.
@@ -39,10 +39,10 @@ export const presets = {
   /**
    * A smaller piece of secondard information.
    */
-  secondary: { ...BASE, fontSize: 9, color: color.dim } as TextStyle,
-}
+  secondary: { ...BASE, fontSize: 9, color: color.dim } as TextStyle
+};
 
 /**
  * A list of preset names.
  */
-export type TextPresets = keyof typeof presets
+export type TextPresets = keyof typeof presets;

@@ -4,11 +4,11 @@
  *
  * You'll likely spend most of your time in this file.
  */
-import React from "react"
+import React from 'react';
 
-import { createNativeStackNavigator } from "react-native-screens/native-stack"
-import { WelcomeScreen, DemoScreen, TictactoeScreen } from "../screens"
-import { color } from "../theme"
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { WelcomeScreen, DemoScreen, TictactoeScreen } from '../screens';
+import { color } from '../theme';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -23,13 +23,13 @@ import { color } from "../theme"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type PrimaryParamList = {
-  welcome: undefined
-  demo: undefined
-  tictactoe: undefined
-}
+  welcome: undefined;
+  demo: undefined;
+  tictactoe: undefined;
+};
 
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
-const Stack = createNativeStackNavigator<PrimaryParamList>()
+const Stack = createNativeStackNavigator<PrimaryParamList>();
 
 export function PrimaryNavigator() {
   return (
@@ -37,15 +37,14 @@ export function PrimaryNavigator() {
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
-        stackAnimation: "default",
-        headerTintColor: color.palette.black,
-      }}
-    >
+        stackAnimation: 'default',
+        headerTintColor: color.palette.black
+      }}>
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="tictactoe" component={TictactoeScreen} />
     </Stack.Navigator>
-  )
+  );
 }
 
 /**
@@ -57,5 +56,5 @@ export function PrimaryNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ["welcome"]
-export const canExit = (routeName: string) => exitRoutes.includes(routeName)
+const exitRoutes = ['welcome'];
+export const canExit = (routeName: string) => exitRoutes.includes(routeName);

@@ -1,28 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 
-import * as React from "react"
-import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { Text, FormRow } from "../"
-import { color } from "../../theme/color"
-import { ViewStyle } from "react-native"
+import * as React from 'react';
+import { storiesOf } from '@storybook/react-native';
+import { StoryScreen, Story, UseCase } from '../../../storybook/views';
+import { Text, FormRow } from '../';
+import { color } from '../../theme';
+import { ViewStyle } from 'react-native';
 
-declare let module
+declare let module;
 
 const TEXT_STYLE_OVERRIDE = {
-  color: color.storybookTextColor,
-}
-const arrayStyle: ViewStyle[] = [{ borderWidth: 5 }, { borderColor: "#32cd32" }]
+  color: color.storybookTextColor
+};
+const arrayStyle: ViewStyle[] = [{ borderWidth: 5 }, { borderColor: '#32cd32' }];
 
-storiesOf("FormRow", module)
+storiesOf('FormRow', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
-  .add("Assembled", () => (
+  .add('Assembled', () => (
     <Story>
       <UseCase
         text="Fully Assembled"
-        usage="FormRow has many parts designed to fit together.  Here is what it looks like all assembled."
-      >
+        usage="FormRow has many parts designed to fit together.  Here is what it looks like all assembled.">
         <FormRow preset="top">
           <Text preset="fieldLabel" style={TEXT_STYLE_OVERRIDE}>
             Hello! I am at the top
@@ -30,9 +29,9 @@ storiesOf("FormRow", module)
         </FormRow>
         <FormRow preset="middle">
           <Text style={TEXT_STYLE_OVERRIDE}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi officia quo rerum
-            impedit asperiores hic ex quae, quam dolores vel odit doloribus, tempore atque deserunt
-            possimus incidunt, obcaecati numquam officiis.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi officia quo rerum impedit asperiores hic
+            ex quae, quam dolores vel odit doloribus, tempore atque deserunt possimus incidunt, obcaecati numquam
+            officiis.
           </Text>
         </FormRow>
         <FormRow preset="middle">
@@ -47,20 +46,20 @@ storiesOf("FormRow", module)
       <UseCase text="Alternatives" usage="Less commonly used presets.">
         <FormRow preset="clear">
           <Text style={TEXT_STYLE_OVERRIDE}>
-            My borders are still there, but they are clear. This causes the text to still align
-            properly due to the box model of flexbox.
+            My borders are still there, but they are clear. This causes the text to still align properly due to the box
+            model of flexbox.
           </Text>
         </FormRow>
         <FormRow preset="soloRound">
           <Text style={TEXT_STYLE_OVERRIDE}>I'm round</Text>
         </FormRow>
-        <FormRow preset="soloStraight" style={{ marginTop: 10, backgroundColor: "#ffe" }}>
+        <FormRow preset="soloStraight" style={{ marginTop: 10, backgroundColor: '#ffe' }}>
           <Text style={TEXT_STYLE_OVERRIDE}>I'm square and have a custom style.</Text>
         </FormRow>
       </UseCase>
     </Story>
   ))
-  .add("Presets", () => (
+  .add('Presets', () => (
     <Story>
       <UseCase text="top" usage="The top of a form.">
         <FormRow preset="top">
@@ -96,7 +95,7 @@ storiesOf("FormRow", module)
       </UseCase>
     </Story>
   ))
-  .add("Styling", () => (
+  .add('Styling', () => (
     <Story>
       <UseCase text="Style array" usage="Form row with an array of styles">
         <FormRow preset="soloStraight" style={arrayStyle}>
@@ -104,4 +103,4 @@ storiesOf("FormRow", module)
         </FormRow>
       </UseCase>
     </Story>
-  ))
+  ));

@@ -106,19 +106,23 @@
     ]
   },
   "prettier": {
-    "printWidth": 100,
-    "semi": false,
-    "singleQuote": false,
-    "trailingComma": "all"
+    "printWidth": 120,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "extends": [
-      "prettier",
       "plugin:@typescript-eslint/recommended",
       "plugin:react/recommended",
       "plugin:react-native/all",
-      "standard"
+      "standard",
+      "prettier"
     ],
     "parserOptions": {
       "ecmaFeatures": {

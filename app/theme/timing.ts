@@ -4,5 +4,5 @@ export const timing = {
   medium: 800,
   fast: 500,
   quick: 300,
-  instant: 0,
-}
+  instant: 0
+};
